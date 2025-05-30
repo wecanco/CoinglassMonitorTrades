@@ -10,7 +10,7 @@ from typing import Dict, Set
 
 # تنظیمات
 HYPERLIQUID_WS_URL = "wss://api.hyperliquid.xyz/ws"
-TELEGRAM_BOT_TOKEN = "7786295882:AAERwsl_F_e3iWX-pPvznP0OTSGNvQYa4fQ"
+TELEGRAM_BOT_TOKEN = "TOKEN"
 TELEGRAM_CHAT_ID = "-1002568768844"  # https://t.me/WhaleTradesMonitoring
 
 # تنظیم لاگ
