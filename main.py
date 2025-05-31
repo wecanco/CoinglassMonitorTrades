@@ -176,12 +176,18 @@ class HyperliquidMonitor:
         else:
             emoji = "⚪"
 
+        if 'Long' in dir:
+            side_text = "🟢 Buy (Long)"
+        elif 'Short' in dir:
+            side_text = "🔴 Sell (Short)"
+        else:
+            side_text = 'N/A'
+
         if not pnl_float:
             pnl_float = 0
 
         pnl_emoji = "💰" if pnl_float > 0 else "💸" if pnl_float < 0 else "💱"
 
-        side_text = "🟢 Buy (Long)" if side == "B" else "🔴 Sell (Short)" if side == "A" else str(side)
 
         message = f"""
 {emoji} <b>{dir} ({leverage_type})</b>
