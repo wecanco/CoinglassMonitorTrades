@@ -175,6 +175,7 @@ class HyperliquidMonitor:
             emoji = "🔵" if side == "A" else "🔵"  # A = Long (خرید), B = Short (فروش)
         else:
             emoji = "⚪"
+            return ""
 
         if 'Long' in dir:
             side_text = "🟢 Buy (Long)"
