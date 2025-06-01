@@ -99,6 +99,7 @@ class HyperliquidMonitor:
         leverage_type = leverage.get('type', 0)
 
         try:
+            print("float 2")
             size_float = float(size)
             entry_price_float = float(entry_price)
             pnl_float = float(unrealized_pnl)
@@ -142,8 +143,7 @@ class HyperliquidMonitor:
         side = position.get('side', 'N/A')
         dir = position.get('dir', 'N/A')
         entry_price = position.get('px', '0')
-        print(position)
-        exit()
+        print("float 3")
         margin = float(position.get('sz', '0'))
         amount = abs(float(position.get('startPosition', '0')))
         time = position.get('time', '0')
@@ -155,6 +155,7 @@ class HyperliquidMonitor:
             return ""
 
         try:
+            print("float 4")
             size_float = float(margin)
             entry_price_float = float(entry_price)
             pnl_float = float(closed_pnl)
@@ -216,6 +217,7 @@ class HyperliquidMonitor:
             if not pos:
                 continue
             coin = pos.get('coin')
+            print("float 1")
             pos['side'] = 'short' if float(pos.get('entryPx', '0')) < float(pos.get('liquidationPx', '0')) else 'long'
             if coin:
                 position_key = f"{coin}_{pos.get('side')}"
