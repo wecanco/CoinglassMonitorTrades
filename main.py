@@ -217,6 +217,7 @@ class HyperliquidMonitor:
             pos['side'] = 'short' if float(pos.get('entryPx', '0')) < float(pos.get('liquidationPx', '0')) else 'long'
             if coin:
                 position_key = f"{coin}_{pos.get('side')}"
+                print(position_key)
                 current_positions[position_key] = pos
 
         # # بررسی پوزیشن‌های جدید
