@@ -219,19 +219,19 @@ class HyperliquidMonitor:
                 position_key = f"{coin}_{pos.get('side')}"
                 current_positions[position_key] = pos
 
-        # بررسی پوزیشن‌های جدید
-        for key, pos in current_positions.items():
-            if key not in self.active_positions[wallet_address]:
-                logger.info(f"New Position Detected: {key} for wallet {wallet_address[-8:]}")
-                message = self.format_position_message(pos, "Opened", wallet_address)
-                asyncio.create_task(self.telegram_sender.queue_message(message))
-
-        # بررسی پوزیشن‌های بسته شده
-        for key, pos in self.active_positions[wallet_address].items():
-            if key not in current_positions:
-                logger.info(f"Position Closed: {key} for wallet {wallet_address[-8:]}")
-                # message = self.format_position_message(pos, "Closed", wallet_address)
-                # asyncio.create_task(self.telegram_sender.queue_message(message))
+        # # بررسی پوزیشن‌های جدید
+        # for key, pos in current_positions.items():
+        #     if key not in self.active_positions[wallet_address]:
+        #         logger.info(f"New Position Detected: {key} for wallet {wallet_address[-8:]}")
+        #         message = self.format_position_message(pos, "Opened", wallet_address)
+        #         asyncio.create_task(self.telegram_sender.queue_message(message))
+        #
+        # # بررسی پوزیشن‌های بسته شده
+        # for key, pos in self.active_positions[wallet_address].items():
+        #     if key not in current_positions:
+        #         logger.info(f"Position Closed: {key} for wallet {wallet_address[-8:]}")
+        #         message = self.format_position_message(pos, "Closed", wallet_address)
+        #         asyncio.create_task(self.telegram_sender.queue_message(message))
 
         self.active_positions[wallet_address] = current_positions.copy()
 
