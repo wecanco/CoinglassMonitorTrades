@@ -214,7 +214,7 @@ class HyperliquidMonitor:
             if not pos:
                 continue
             coin = pos.get('coin')
-            pos['side'] = 'short' if pos.get('entryPx') < pos.get('liquidationPx') else 'long'
+            pos['side'] = 'short' if float(pos.get('entryPx', '0')) < float(pos.get('liquidationPx', '0')) else 'long'
             if coin:
                 position_key = f"{coin}_{pos.get('side')}"
                 current_positions[position_key] = pos
