@@ -230,8 +230,8 @@ class HyperliquidMonitor:
         for key, pos in self.active_positions[wallet_address].items():
             if key not in current_positions:
                 logger.info(f"Position Closed: {key} for wallet {wallet_address[-8:]}")
-                message = self.format_position_message(pos, "Closed", wallet_address)
-                asyncio.create_task(self.telegram_sender.queue_message(message))
+                # message = self.format_position_message(pos, "Closed", wallet_address)
+                # asyncio.create_task(self.telegram_sender.queue_message(message))
 
         self.active_positions[wallet_address] = current_positions.copy()
 
@@ -244,7 +244,12 @@ class HyperliquidMonitor:
             current_fills[fills_key] = fill
 
         for key, pos in current_fills.items():
-            if key not in self.active_fills[wallet_address]:
+            if 'Long' in pos.get('dir'):
+                side = "long"
+            else:
+                side = "short"
+            key2 = f"{pos.get('coin')}_{side}"
+            if key not in self.active_fills[wallet_address] and key2 not in self.active_positions[wallet_address]:
                 logger.info(f"New fills Detected: {key} for wallet {wallet_address[-8:]}")
                 message = self.format_fills_message(pos, wallet_address)
                 if message:
@@ -287,6 +292,19 @@ class HyperliquidMonitor:
             logger.error(f"Process Message Error: {e}")
 
     async def subscribe_to_wallets(self, websocket):
+        # Subscribe to webData2 for all wallets
+        for wallet in self.wallet_addresses:
+            subscription_message = {
+                "method": "subscribe",
+                "subscription": {
+                    "type": "webData2",
+                    "user": wallet
+                }
+            }
+            await websocket.send(json.dumps(subscription_message))
+            logger.info(f"Subscribed to webData2 for wallet {wallet[-8:]}")
+            await asyncio.sleep(0.1)  # مکث کوتاه بین subscribe ها
+
         # Subscribe to userFills for all wallets
         for wallet in self.wallet_addresses:
             subscription_message = {
@@ -299,19 +317,6 @@ class HyperliquidMonitor:
             await websocket.send(json.dumps(subscription_message))
             logger.info(f"Subscribed to userFills for wallet {wallet[-8:]}")
             await asyncio.sleep(0.1)  # مکث کوتاه بین subscribe ها
-
-        # # Subscribe to webData2 for all wallets
-        # for wallet in self.wallet_addresses:
-        #     subscription_message = {
-        #         "method": "subscribe",
-        #         "subscription": {
-        #             "type": "webData2",
-        #             "user": wallet
-        #         }
-        #     }
-        #     await websocket.send(json.dumps(subscription_message))
-        #     logger.info(f"Subscribed to webData2 for wallet {wallet[-8:]}")
-        #     await asyncio.sleep(0.1)  # مکث کوتاه بین subscribe ها
 
     async def connect_and_monitor(self):
         while True:
