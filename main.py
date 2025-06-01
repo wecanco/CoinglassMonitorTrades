@@ -255,6 +255,7 @@ class HyperliquidMonitor:
             key2 = f"{pos.get('coin')}_{side}"
             if key not in self.active_fills[wallet_address] and key2 not in self.active_positions[wallet_address]:
                 logger.info(f"New fills Detected: {key} for wallet {wallet_address[-8:]}")
+                self.active_positions[wallet_address][key2] = pos
                 message = self.format_fills_message(pos, wallet_address)
                 if message:
                     asyncio.create_task(self.telegram_sender.queue_message(message))
