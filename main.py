@@ -217,7 +217,6 @@ class HyperliquidMonitor:
             try:
                 pos['side'] = 'short' if float(pos.get('entryPx', '0')) < float(pos.get('liquidationPx', '0')) else 'long'
             except:
-                print(pos)
                 pos['side'] = '-'
 
             if coin:
