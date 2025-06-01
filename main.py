@@ -142,6 +142,8 @@ class HyperliquidMonitor:
         side = position.get('side', 'N/A')
         dir = position.get('dir', 'N/A')
         entry_price = position.get('px', '0')
+        print(position)
+        exit()
         margin = float(position.get('sz', '0'))
         amount = abs(float(position.get('startPosition', '0')))
         time = position.get('time', '0')
@@ -305,18 +307,18 @@ class HyperliquidMonitor:
             logger.info(f"Subscribed to webData2 for wallet {wallet[-8:]}")
             await asyncio.sleep(0.1)  # مکث کوتاه بین subscribe ها
 
-        # # Subscribe to userFills for all wallets
-        # for wallet in self.wallet_addresses:
-        #     subscription_message = {
-        #         "method": "subscribe",
-        #         "subscription": {
-        #             "type": "userFills",
-        #             "user": wallet
-        #         }
-        #     }
-        #     await websocket.send(json.dumps(subscription_message))
-        #     logger.info(f"Subscribed to userFills for wallet {wallet[-8:]}")
-        #     await asyncio.sleep(0.1)  # مکث کوتاه بین subscribe ها
+        # Subscribe to userFills for all wallets
+        for wallet in self.wallet_addresses:
+            subscription_message = {
+                "method": "subscribe",
+                "subscription": {
+                    "type": "userFills",
+                    "user": wallet
+                }
+            }
+            await websocket.send(json.dumps(subscription_message))
+            logger.info(f"Subscribed to userFills for wallet {wallet[-8:]}")
+            await asyncio.sleep(0.1)  # مکث کوتاه بین subscribe ها
 
     async def connect_and_monitor(self):
         while True:
