@@ -214,8 +214,6 @@ class HyperliquidMonitor:
             if not pos:
                 continue
             coin = pos.get('coin')
-            print(pos)
-            exit()
             pos['side'] = 'short' if float(pos.get('entryPx', '0')) < float(pos.get('liquidationPx', '0')) else 'long'
             if coin:
                 position_key = f"{coin}_{pos.get('side')}"
@@ -307,18 +305,18 @@ class HyperliquidMonitor:
             logger.info(f"Subscribed to webData2 for wallet {wallet[-8:]}")
             await asyncio.sleep(0.1)  # مکث کوتاه بین subscribe ها
 
-        # Subscribe to userFills for all wallets
-        for wallet in self.wallet_addresses:
-            subscription_message = {
-                "method": "subscribe",
-                "subscription": {
-                    "type": "userFills",
-                    "user": wallet
-                }
-            }
-            await websocket.send(json.dumps(subscription_message))
-            logger.info(f"Subscribed to userFills for wallet {wallet[-8:]}")
-            await asyncio.sleep(0.1)  # مکث کوتاه بین subscribe ها
+        # # Subscribe to userFills for all wallets
+        # for wallet in self.wallet_addresses:
+        #     subscription_message = {
+        #         "method": "subscribe",
+        #         "subscription": {
+        #             "type": "userFills",
+        #             "user": wallet
+        #         }
+        #     }
+        #     await websocket.send(json.dumps(subscription_message))
+        #     logger.info(f"Subscribed to userFills for wallet {wallet[-8:]}")
+        #     await asyncio.sleep(0.1)  # مکث کوتاه بین subscribe ها
 
     async def connect_and_monitor(self):
         while True:
